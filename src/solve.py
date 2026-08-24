@@ -1,10 +1,11 @@
-"""Generate data when necessary, solve the MILP, and write reports."""
+"""Generate data when necessary, validate inputs, solve the MILP, and write reports."""
 
 from pathlib import Path
 
 from generate_data import generate
 from model import load_data, solve_model
 from reporting import build_reports, write_reports
+from validation import validate_model_data
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "data"
@@ -17,6 +18,7 @@ def main() -> None:
         generate()
 
     data = load_data(DATA_DIR)
+    validate_model_data(data)
     result, variables, crf = solve_model(data)
 
     if not result.success:
